@@ -30,7 +30,7 @@ namespace MemoryGame.App
                 string[,] wordPairs = _wordsManager.Initiate(randomArray);
                 string[,] matchedArray = _wordsManager.Initiate(randomArray);
                 Console.WriteLine($"Level: {difficulty}");
-                Console.WriteLine("Guess chances: 10");
+                Console.WriteLine($"Guess chances: {_difficultyLevelManager.GetNumberOfChances(difficulty)}");
                 _displayManager.Display(wordPairs);
                 int chances = _difficultyLevelManager.GetNumberOfChances(difficulty);
                 bool isAllGuessed = false;
