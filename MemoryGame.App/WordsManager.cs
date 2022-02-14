@@ -40,6 +40,32 @@ namespace MemoryGame.App
             }
         }
 
+        public string[,] MapToArray(List<string> words)
+        {
+            const int rows  = 2;
+            var columns = words.Count;
+
+            var result = new string[rows, columns];
+            for (int r = 0; r != rows; r++)
+                for (int c = 0; c != columns; c++)
+                    result[r, c] = words[c];
+
+            return result;
+        }
+
+        public string[,] Initiate(List<string> words)
+        {
+            const int rows = 2;
+            var columns = words.Count;
+
+            var result = new string[rows, columns];
+            for (int r = 0; r != rows; r++)
+                for (int c = 0; c != columns; c++)
+                    result[r, c] = "X";
+
+            return result;
+        }
+
         public bool CheckIfAllGuessed(string[,] wordPairs)
         {
             var rowsCount = wordPairs.GetLength(0);
