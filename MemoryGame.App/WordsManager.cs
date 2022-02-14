@@ -18,7 +18,19 @@ namespace MemoryGame.App
         public List<string> Roll(string[] words, Difficulty difficulty)
         {
             var number = _difficultyLevelManager.GetNumberOfChoices(difficulty);
-            return words.Take(number).ToList();
+            var randomWords = new string[number];
+            
+            for (int i = 0; i < number; i++)
+            {
+                string word = GetRandomWord(words);
+                while (randomWords.Contains(word))
+                {
+                    word = GetRandomWord(words);
+                }
+                randomWords[i] = word;
+            }
+
+            return randomWords.ToList();
         }
 
         public void Shuffle(string[,] doubleWordsArray)
@@ -82,6 +94,12 @@ namespace MemoryGame.App
                 }
             }
             return true;
+        }
+
+        private string GetRandomWord(string[] words)
+        {
+            Random rng = new Random();
+            return words[rng.Next(0, words.Length)];
         }
     }
 }
