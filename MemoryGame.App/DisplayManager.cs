@@ -11,7 +11,7 @@ namespace MemoryGame.App
             var columnsCount = wordPairs.GetLength(1);
             int alphabetLetterIndex = 65;
 
-            var displayNumbers = string.Join(" ", Enumerable.Range(1, columnsCount).Select(n => $"{n}")).ToString();
+            var displayNumbers = string.Join(" ", Enumerable.Range(1, columnsCount).Select(n => $"{n}"));
             Console.WriteLine(string.Concat("  ", displayNumbers));
             for (int i = 0; i < rowsCount; i++)
             {

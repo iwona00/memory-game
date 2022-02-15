@@ -8,14 +8,21 @@ namespace MemoryGame.App
     {
         public KeyValuePair<int, int> ReadGuess (string[,] wordPairs)
         {
+            const string mismatchDeterminator = "X";
+            const int allowedGuessLength = 2;
             var goodChoice = false;
             var alphabetFirstLetterIndex = 65;
-            const string mismatchDeterminator = "X";
 
             do
             {
                 Console.Write("Your choice: ");
                 var choice = Console.ReadLine();
+
+                if(choice.Length != allowedGuessLength)
+                {
+                    Console.WriteLine("Wrong! Enter correct value.");
+                    continue;
+                }
 
                 var parsedInput = choice.Substring(0, 1).ToCharArray().First();
                 if (!int.TryParse(choice.Substring(1, 1), out var parsedColumn))
@@ -31,8 +38,8 @@ namespace MemoryGame.App
                     continue;
                 }
 
-                var alreadyMatched = wordPairs[choiceIndex, parsedColumn - 1].Equals(mismatchDeterminator);
-                if (!alreadyMatched)
+                var matched = !wordPairs[choiceIndex, parsedColumn - 1].Equals(mismatchDeterminator);
+                if (matched)
                 {
                     Console.WriteLine("You chose coordinates of a word which is already matched...");
                     continue;
@@ -42,7 +49,7 @@ namespace MemoryGame.App
             }
             while (goodChoice == false);
 
-            throw new Exception("Cannot determinate the user inuput.");
+            throw new Exception("Cannot determinate the user input.");
         }
     }
 }

@@ -80,6 +80,7 @@ namespace MemoryGame.App
 
         public bool CheckIfAllGuessed(string[,] wordPairs)
         {
+            const string mismatchDeterminator = "X";
             var rowsCount = wordPairs.GetLength(0);
             var columnsCount = wordPairs.GetLength(1);
 
@@ -87,7 +88,7 @@ namespace MemoryGame.App
             {
                 for (int j = 0; j < columnsCount; j++)
                 {
-                    if (wordPairs[i, j].Equals("X"))
+                    if (wordPairs[i, j].Equals(mismatchDeterminator))
                     {
                         return false;
                     }

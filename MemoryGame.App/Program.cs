@@ -10,6 +10,8 @@ namespace MemoryGame.App
         private static DifficultyLevelManager _difficultyLevelManager = new DifficultyLevelManager();
         private static GameProcessor _gameProcessor = new GameProcessor();
 
+        const string _mismatchDeterminator = "X";
+
         static void Main(string[] args)
         {
             string[] words = System.IO.File.ReadAllLines(@"C:\Users\Iwcia\Downloads\Words.txt");
@@ -29,13 +31,13 @@ namespace MemoryGame.App
                 // Matrix consisting X
                 string[,] wordPairs = _wordsManager.Initiate(randomArray);
                 string[,] matchedArray = _wordsManager.Initiate(randomArray);
-                Console.WriteLine($"Level: {difficulty}");
-                Console.WriteLine($"Guess chances: {_difficultyLevelManager.GetNumberOfChances(difficulty)}");
-                _displayManager.Display(wordPairs);
                 int chances = _difficultyLevelManager.GetNumberOfChances(difficulty);
-                bool isAllGuessed = false;
+                Console.WriteLine($"Level: {difficulty}");
+                Console.WriteLine($"Guess chances: {chances}");
+                _displayManager.Display(wordPairs);
 
-                while (chances > 0 & isAllGuessed == false)
+                bool isAllGuessed = false;
+                while (chances > 0 && !isAllGuessed)
                 {
                     Console.WriteLine("Write coordinates of the word you want to discover (for example: B2)");
 
@@ -63,10 +65,11 @@ namespace MemoryGame.App
                     wordPairs[indexColumnPairSecond.Key, (indexColumnPairSecond.Value - 1)] = doubleWordsArray[indexColumnPairSecond.Key, (indexColumnPairSecond.Value - 1)];
                     _displayManager.Display(wordPairs);
 
-                    if (doubleWordsArray[indexColumnPairSecond.Key, (indexColumnPairSecond.Value - 1)].Equals(doubleWordsArray[indexColumnPairFirst.Key, indexColumnPairFirst.Value - 1]))
+                    var firstInputMatchesSecondInput = doubleWordsArray[indexColumnPairSecond.Key, (indexColumnPairSecond.Value - 1)].Equals(doubleWordsArray[indexColumnPairFirst.Key, indexColumnPairFirst.Value - 1]);
+                    if (firstInputMatchesSecondInput)
                     {
                         isAllGuessed = _wordsManager.CheckIfAllGuessed(wordPairs);
-                        if (isAllGuessed == true)
+                        if (isAllGuessed)
                         {
                             Console.WriteLine("Congratulations! You won the game <3");
                             playAgain = _displayManager.ShouldPlayAgain();
@@ -76,8 +79,7 @@ namespace MemoryGame.App
                             Console.WriteLine("You matched a pair!");
                             matchedArray[indexColumnPairSecond.Key, (indexColumnPairSecond.Value - 1)] = "M";
                             matchedArray[indexColumnPairFirst.Key, (indexColumnPairFirst.Value - 1)] = "M";
-                            chances--;
-                            if (chances == 0)
+                            if (--chances == 0)
                             {
                                 Console.WriteLine("GAME OVER - You lost all of your chances to win the game. Maybe next time you will succeed. Good luck! ^.^");
                                 playAgain = _displayManager.ShouldPlayAgain();
@@ -92,8 +94,7 @@ namespace MemoryGame.App
                     else
                     {
                         Console.WriteLine("You failed to match. Try again!");
-                        chances--;
-                        if (chances == 0)
+                        if (--chances == 0)
                         {
                             Console.WriteLine("GAME OVER - You lost all of your chances to win the game. Maybe next time you will succeed. Good luck! ^.^");
                             playAgain = _displayManager.ShouldPlayAgain();
@@ -101,13 +102,13 @@ namespace MemoryGame.App
                         else
                         {
                             Console.WriteLine("You still have " + chances + " chances to win.");
-                            wordPairs[indexColumnPairSecond.Key, indexColumnPairSecond.Value - 1] = "X";
-                            wordPairs[indexColumnPairFirst.Key, indexColumnPairFirst.Value - 1] = "X";
+                            wordPairs[indexColumnPairSecond.Key, indexColumnPairSecond.Value - 1] = _mismatchDeterminator;
+                            wordPairs[indexColumnPairFirst.Key, indexColumnPairFirst.Value - 1] = _mismatchDeterminator;
                             _displayManager.Display(wordPairs);
                         }
                     }
                 }
-            } while (playAgain == true);
+            } while (playAgain);
         }
     }
 }
