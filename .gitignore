@@ -264,3 +264,4 @@ FakesAssemblies/
 
 #bak files
 *.gitignore.*
+*.bak*
